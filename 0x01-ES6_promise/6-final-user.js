@@ -7,9 +7,9 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
       const resultArray = [];
       for (const object of result) {
         if ('status' in object && 'value' in object) {
-          resultArray.push({ status: object.status, value: `${object.value}` });
+          resultArray.push({ status: object.status, value: object.value });
         } else {
-          resultArray.push({ status: object.status, reason: `${object.reason}` });
+          resultArray.push({ status: object.status, value: `${object.reason}` });
         }
       }
       return resultArray;
