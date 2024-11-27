@@ -5,7 +5,7 @@ const countStudents = function readFile(path) {
     if (err) {
       throw new Error('Cannot load the database');
     }
-    const parsedData = data.split('\n').filter((row) => row.length);
+    const parsedData = data.split('\n').filter((row) => row.trim());
     const withoutField = parsedData.slice(1);
     const courses = {};
     withoutField.slice().forEach((element) => {
