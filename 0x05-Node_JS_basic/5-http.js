@@ -1,14 +1,18 @@
 const http = require('http');
 const fs = require('fs');
 
-function countStudents(path) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (error, data) => {
-      if (error) {
-        reject(error);
-        return;
-      }
+const app2 = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
 
+  const { url } = req;
+
+  if (url === '/') {
+    res.write('Hello Holberton School!');
+    res.end();
+  } else if (url === '/students') {
+    try {
+      const path = process.argv[2] || 'database.csv';
+      const data = fs.readFileSync(path, 'utf8'); // Read the file synchronously
       const parsedData = data.split('\n').filter((row) => row.trim());
       const withoutField = parsedData.slice(1);
       const courses = {};
@@ -24,34 +28,14 @@ function countStudents(path) {
         totalStudents += 1;
       });
 
-      const result = {
-        totalStudents,
-        courses,
-      };
-      resolve(result);
-    });
-  });
-}
-
-const app2 = http.createServer(async (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-
-  const url = req.url;
-
-  if (url === '/') {
-    res.write('Hello Holberton School!');
-    res.end();
-  } else if (url === '/students') {
-    try {
-      const path = process.argv[2] || 'database.csv';
-      const result = await countStudents(path);
-
-      let response = `Number of students: ${result.totalStudents}`;
-      Object.keys(result.courses).forEach((key) => {
-        response += `\nNumber of students in ${key}: ${result.courses[key].length}. List: ${result.courses[key].join(', ')}`;
+      // Build the response string
+      let responseText = `Number of students: ${totalStudents}\n`;
+      Object.keys(courses).forEach((key) => {
+        responseText += `Number of students in ${key}: ${courses[key].length}. List: ${courses[key].join(', ')}\n`;
       });
 
-      res.write(response);
+      // Write the result to the response
+      res.write(responseText);
     } catch (error) {
       res.write('Cannot load the database');
     }
@@ -60,4 +44,3 @@ const app2 = http.createServer(async (req, res) => {
 }).listen(1245);
 
 module.exports = app2;
-
