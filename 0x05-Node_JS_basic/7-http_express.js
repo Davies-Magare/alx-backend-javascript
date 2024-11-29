@@ -7,9 +7,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/students', (req, res) => {
+  res.set('Content-Type', 'text/plain');
   let result = '';
   try {
-    let path = process.argv[2] || 'database.csv';
+    const path = process.argv[2] || 'database.csv';
     const data = fs.readFileSync(path, 'utf8');
     const parsedData = data.split('\n').filter((row) => row.trim());
     const withoutField = parsedData.slice(1);
@@ -36,4 +37,3 @@ app.get('/students', (req, res) => {
 app.listen(1245);
 
 module.exports = app;
-
