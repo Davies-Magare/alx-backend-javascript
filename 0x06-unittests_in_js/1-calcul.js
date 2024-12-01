@@ -8,6 +8,9 @@ calculateNumber = function(type, a, b) {
     return rndA - rndB;
   }
   else if (type === 'DIVIDE') {
+    if (rndB === 0) {
+      return('error');
+    }
     return rndA / rndB;
   }
 }

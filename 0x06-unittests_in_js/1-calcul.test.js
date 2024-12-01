@@ -57,5 +57,14 @@ describe('test the calc function-SUM', function() {
       result = calc('DIVIDE', 2.9, 2.1);
       assert.equal(result, 1.5);
     });
+    it('test dividing a float and a zero', () => {
+      result = calc('DIVIDE', 2.9, 0.1);
+      assert.equal(result, 'error');
+    });
+    
+    it('test dividing float with a zero', () => {
+      result = calc('DIVIDE', 2.9, 0);
+      assert.equal(result, 'error');
+    });
   });
 });
